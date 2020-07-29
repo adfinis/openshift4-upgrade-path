@@ -17,6 +17,18 @@ Shortest Upgrade path from 4.1.15 to 4.3.18:
   4.2.27 -> 4.3.18 using stable-4.3
 ```
 
+You can also pass a `major.minor` version only for the target version,
+which is interpreted as the latest release for this version:
+
+```sh
+$ ./openshift4-upgrade-path.py 4.1.15 4.3
+Shortest Upgrade path from 4.1.15 to 4.3.18:
+  4.1.15 -> 4.1.24 using stable-4.1
+  4.1.24 -> 4.1.38 using stable-4.2
+  4.1.38 -> 4.2.27 using stable-4.2
+  4.2.27 -> 4.3.18 using stable-4.3
+```
+
 If there is no upgrade path available:
 
 ```sh

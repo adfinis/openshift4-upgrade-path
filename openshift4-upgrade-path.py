@@ -51,11 +51,15 @@ def fetch_channel_graph(channel, arch='amd64'):
         channel_data = json.loads(response.read().decode())
     # Transform the upgrade path graph into adjacency list form
     edges = {}
+    target_nodes = set()
     for edge in channel_data['edges']:
         outnode = channel_data['nodes'][edge[0]]['version']
         innode = channel_data['nodes'][edge[1]]['version']
         edges.setdefault(outnode, set()).add((innode, channel))
-    return edges
+        target_nodes.add(innode)
+    # Latest version is always the one with no outgoing edges
+    latest = [k for k in target_nodes if k not in edges][0]
+    return edges, latest
 
 
 def merge_graphs_inplace(a, b):
@@ -121,8 +125,11 @@ def main():
     # Fetch the upgrade path of each channel and merge the individual graphs into one
     graph = {}
     for channel in clist:
-        subgraph = fetch_channel_graph(channel, arch=args.arch)
+        subgraph, latest = fetch_channel_graph(channel, arch=args.arch)
         merge_graphs_inplace(graph, subgraph)
+    # If only a "major.minor" version was passed, replace by the latest release for this version
+    if len(new_version.split('.')) == 2:
+        new_version = latest
     # Find a shortest upgrade path
     path = dijkstra(graph, old_version, new_version)
     if path is None:
