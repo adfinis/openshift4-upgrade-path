@@ -22,6 +22,7 @@ which is interpreted as the latest release for this version:
 
 ```sh
 $ ./openshift4-upgrade-path.py 4.1.15 4.3
+Using 4.3.18 as target instead of 4.3
 Shortest Upgrade path from 4.1.15 to 4.3.18:
   4.1.15 -> 4.1.24 using stable-4.1
   4.1.24 -> 4.1.38 using stable-4.2
