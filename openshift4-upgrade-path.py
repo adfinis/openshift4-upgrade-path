@@ -129,6 +129,7 @@ def main():
         merge_graphs_inplace(graph, subgraph)
     # If only a "major.minor" version was passed, replace by the latest release for this version
     if len(new_version.split('.')) == 2:
+        print(f'Using {latest} as target instead of {new_version}')
         new_version = latest
     # Find a shortest upgrade path
     path = dijkstra(graph, old_version, new_version)
